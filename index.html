@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+    <h3>Marcos Augusto Quiuqui Machado Queiroz</h3>
     <head>
         <title>Calculadora IMC</title>
         <link rel="stylesheet" href="index.css">
@@ -7,8 +8,8 @@
     <body>
         <div class="container">
             <div class="data">
-                <div class="form">
-                    <form>
+                <h1>Calculadora de IMC</h1>
+                 <form>
                         <div class="row">
                             <label>Altura:</label>
                             <input type="text" id="altura" placeholder="Digite sua altura (em metros)" />
@@ -18,13 +19,26 @@
                             <input type="text" id="peso" placeholder="Digite seu peso (em kg)" />
                         </div>
                         <div class="row">
-                            <button type="submit" id="calcular">Calcular IMC</button>
+                            <button type="submit" id="calcular" class="calcular">Calcular IMC</button>
                         </div>
                     </form>
+                <div class="result-area">
+                    <strong>Resultado:</strong> <span id="imc"></span>
                 </div>
-            </div>
-            <div class="data">
-                <p>Seu IMC &eacute; <span id="imc"></span></p>
+
+                <div class="table-container">
+                    <h2>Tabela de Classificação</h2>
+                    <table id="imc-tabela">
+                        <thead>
+                            <tr>
+                                <th>IMC</th>
+                                <th>Classificação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </body>

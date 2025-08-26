@@ -47,10 +47,51 @@ function actionCalcularIMCBuilder() {
             parseFloat(alturaEl.value),
             parseFloat(pesoEl.value)
         );
-        console.log(Nutricionista.prototype.constructor);
-        console.log(nutricionista instanceof Pessoa);
-
         renderizaResultadoIMC(nutricionista);
+        var classificacaoAtual = nutricionista.classificaIMC();
+        destacarLinhaTabela(classificacaoAtual);
+    }
+}
+
+var dadosTabelaIMC = [
+    { faixa: 'Menor que 18.5', classificacao: 'Abaixo do peso' },
+    { faixa: 'Entre 18.5 e 24.9', classificacao: 'Peso normal' },
+    { faixa: 'Entre 25.0 e 29.9', classificacao: 'Sobrepeso' },
+    { faixa: 'Maior que 29.9', classificacao: 'Obesidade' }
+];
+
+function criarTabelaIMC() {
+    var tbody = document.querySelector('#imc-tabela tbody');
+    tbody.innerHTML = '';
+
+    for (var i = 0; i < dadosTabelaIMC.length; i++) {
+        var item = dadosTabelaIMC[i];
+        var linha = document.createElement('tr');
+        
+        linha.setAttribute('data-classificacao', item.classificacao);
+
+        var celulaFaixa = document.createElement('td');
+        celulaFaixa.textContent = item.faixa;
+        linha.appendChild(celulaFaixa);
+
+        var celulaClassificacao = document.createElement('td');
+        celulaClassificacao.textContent = item.classificacao;
+        linha.appendChild(celulaClassificacao);
+
+        tbody.appendChild(linha);
+    }
+}
+
+function destacarLinhaTabela(classificacao) {
+    var todasAsLinhas = document.querySelectorAll('#imc-tabela tbody tr');
+    
+    for (var i = 0; i < todasAsLinhas.length; i++) {
+        todasAsLinhas[i].classList.remove('highlight');
+    }
+
+    var linhaParaDestacar = document.querySelector('tr[data-classificacao="' + classificacao + '"]');
+    if (linhaParaDestacar) {
+        linhaParaDestacar.classList.add('highlight');
     }
 }
 
@@ -58,4 +99,5 @@ window.onload = function () {
     document
         .getElementById("calcular")
         .addEventListener("click", actionCalcularIMCBuilder());
+    criarTabelaIMC();
 };
