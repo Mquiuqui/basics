@@ -9,24 +9,26 @@ function Pessoa(altura, peso) {
 
 function Nutricionista(altura, peso) {
     Pessoa.call(this, altura, peso);
-    this.imc = function () {
-        return this.peso / (this.altura * this.altura);
-    };
 
-    this.classificaIMC = function () {
-        var imc = this.imc();
-        if (imc < 18.5) {
-            return "Abaixo do peso";
-        }
-        if (imc >= 18.5 && imc < 24.9) {
-            return "Peso normal";
-        }
-        if (imc >= 25 && imc < 29.9) {
-            return "Sobrepeso";
-        }
+    //não estamos usando mais esse trecho
+    // this.imc = function () {
+    //     return this.peso / (this.altura * this.altura);
+    // };
 
-        return "Obesidade";
-    };
+    // this.classificaIMC = function () {
+    //     var imc = this.imc();
+    //     if (imc < 18.5) {
+    //         return "Abaixo do peso";
+    //     }
+    //     if (imc >= 18.5 && imc < 24.9) {
+    //         return "Peso normal";
+    //     }
+    //     if (imc >= 25 && imc < 29.9) {
+    //         return "Sobrepeso";
+    //     }
+
+    //     return "Obesidade";
+    // };
 }
 Nutricionista.prototype = Object.create(Pessoa.prototype);
 Nutricionista.prototype.constructor = Nutricionista;
