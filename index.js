@@ -47,17 +47,15 @@ function actionCalcularIMCBuilder() {
             parseFloat(alturaEl.value),
             parseFloat(pesoEl.value)
         );
-        renderizaResultadoIMC(nutricionista);
-        var classificacaoAtual = nutricionista.classificaIMC();
-        destacarLinhaTabela(classificacaoAtual);
+    calculaImcComDestaque(nutricionista);
     }
 }
 
 var dadosTabelaIMC = [
-    { faixa: 'Menor que 18.5', classificacao: 'Abaixo do peso' },
-    { faixa: 'Entre 18.5 e 24.9', classificacao: 'Peso normal' },
-    { faixa: 'Entre 25.0 e 29.9', classificacao: 'Sobrepeso' },
-    { faixa: 'Maior que 29.9', classificacao: 'Obesidade' }
+    { faixa: 'Menor que 18.5', classificacao: 'Abaixo do peso', padraoAPI: "magreza" },
+    { faixa: 'Entre 18.5 e 24.9', classificacao: 'Peso normal', padraoAPI: "normal" },
+    { faixa: 'Entre 25.0 e 29.9', classificacao: 'Sobrepeso', padraoAPI: "sobrepeso" },
+    { faixa: 'Maior que 29.9', classificacao: 'Obesidade', padraoAPI: "obesidade" }
 ];
 
 function criarTabelaIMC() {
@@ -80,6 +78,28 @@ function criarTabelaIMC() {
 
         tbody.appendChild(linha);
     }
+}
+
+function calculaImcComDestaque(nutricionista) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:3000/imc/calculate", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById("imc").innerText =
+                    response.imc + " - " + response.imcDescription;
+                var item = dadosTabelaIMC.find(function(x) { return x.padraoAPI === response.imcDescription; });
+                if (item) {
+                    destacarLinhaTabela(item.classificacao);
+                }
+            } catch (e) {
+                alert("Erro ao processar resposta da API");
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ height: nutricionista.altura, weight: nutricionista.peso }));
 }
 
 function destacarLinhaTabela(classificacao) {
